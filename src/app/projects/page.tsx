@@ -39,7 +39,7 @@ export default function Projects() {
       <div className="container mx-auto max-w-4xl">
         <h1 className="text-4xl font-bold mb-8">My Projects</h1>
         <p className="text-xl text-gray-600 dark:text-gray-300 mb-12">
-          Here are some of the projects I've worked on. Each project represents a unique challenge and learning experience.
+          Here are some of the projects I&apos;ve worked on. Each project represents a unique challenge and learning experience.
         </p>
         
         <div className="grid gap-8">
