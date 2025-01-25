@@ -3,14 +3,17 @@
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  schemas  = ["auth", "public"]
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
 }
 
-model Post {
-  id        String   @id @default(cuid())
+model Posts {
+  id        String   @id @default(uuid())
+  user_id   String
   title     String
   slug      String   @unique
   content   String
@@ -19,4 +22,27 @@ model Post {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   readTime  String
+
+  // Relation Table
+  user User @relation(fields: [user_id], references: [id])
+
+  // Schema and Table
+  @@map("posts")
+  @@schema("public")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relation Table
+  Posts Posts[]
+
+  // Schema and Table
+  @@map("user")
+  @@schema("auth")
 }

@@ -3,6 +3,15 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 async function main() {
+  // Create a user first
+  const user = await prisma.User.create({
+    data: {
+      email: 'admin@example.com',
+      name: 'Admin User',
+      password: 'admin123' // In production, this should be hashed
+    }
+  });
+
   const posts = [
     {
       title: 'Getting Started with Next.js 13 and Server Components',
@@ -34,8 +43,11 @@ async function main() {
   ];
 
   for (const post of posts) {
-    await prisma.post.create({
-      data: post
+    await prisma.Posts.create({
+      data: {
+        ...post,
+        user_id: user.id
+      }
     });
   }
 }
