@@ -3,8 +3,8 @@ import prisma from '@/lib/prisma';
 import BlogPostContent from './BlogPostContent';
 
 interface BlogPostParams {
-  params: any;
-  searchParams?: { [key: string]: string | string[] | undefined };
+  params: Promise<any>;
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 export interface GenerateMetadata {
@@ -27,9 +27,10 @@ async function getPost(slug: string) {
   return post;
 }
 
-export default async function BlogPost({ params }: BlogPostParams) {
+export default async function BlogPost(props: BlogPostParams) {
+  const params = await props.params;
   const { slug } = params;
-  
+
   if (!slug) {
     notFound();
   }
