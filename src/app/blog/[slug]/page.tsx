@@ -3,9 +3,13 @@ import prisma from '@/lib/prisma';
 import BlogPostContent from './BlogPostContent';
 
 interface BlogPostParams {
-  params: {
-    slug: string;
-  };
+  params: any;
+  searchParams?: { [key: string]: string | string[] | undefined };
+}
+
+export interface GenerateMetadata {
+  params: { slug: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 }
 
 async function getPost(slug: string) {
@@ -24,9 +28,13 @@ async function getPost(slug: string) {
 }
 
 export default async function BlogPost({ params }: BlogPostParams) {
-  // Ensure params is resolved before accessing slug
-  const resolvedParams = await Promise.resolve(params);
-  const post = await getPost(resolvedParams.slug);
+  const { slug } = params;
+  
+  if (!slug) {
+    notFound();
+  }
+
+  const post = await getPost(slug);
 
   if (!post) {
     notFound();
