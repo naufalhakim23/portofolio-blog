@@ -9,7 +9,7 @@ interface BlogPostParams {
 }
 
 async function getPost(slug: string) {
-  const post = await prisma.post.findUnique({
+  const post = await prisma.posts.findUnique({
     where: {
       slug: slug,
       published: true
